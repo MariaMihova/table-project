@@ -10,6 +10,11 @@
       v-bind:toEdit="user"
       @close="closeForm"
     ></Popup>
+    <Details
+      v-bind:isOpen="detailsPopup"
+      v-bind:toEdit="product"
+      @close="closeForm"
+    ></Details>
 
     <v-card-title>
       Products
@@ -36,6 +41,9 @@
             {{ item.userId }}
           </v-btn>
         </template>
+        <template v-slot:[`item.details`]="{ item }">
+          <v-btn small @click="showDetails(item)"> Details </v-btn>
+        </template>
         <template v-slot:[`item.action`]="{ item }">
           <v-btn small @click="editItem(item)"> Edit </v-btn>
         </template>
@@ -46,6 +54,7 @@
 
 <script>
 import Popup from "./Popup.vue";
+import Details from "./Details.vue";
 import ProductsApi from "../aip/productsService.js";
 import ProductsViews from "../viewModels/productsViews.js";
 import UsersViwes from "../viewModels/usersViews.js";
@@ -53,14 +62,17 @@ import UsersViwes from "../viewModels/usersViews.js";
 export default {
   components: {
     Popup,
+    Details,
   },
 
   data() {
     return {
       editProduct: null,
       user: null,
+      product: null,
       popup: false,
       userPopup: false,
+      detailsPopup: false,
       search: "",
       headers: [
         {
@@ -76,17 +88,34 @@ export default {
 
   async mounted() {
     const responseData = await ProductsApi.getAllProducts();
-    this.products = await ProductsViews.populateProducts(responseData.json());
+    const data = await responseData.json();
+    this.products = ProductsViews.populateProducts(data);
     for (let prop in this.products[0]) {
       this.headers.push({ text: prop, value: prop });
     }
 
+    this.headers.push({ text: "Details", value: "details" });
     this.headers.push({ text: "Edit", value: "action" });
   },
 
   methods: {
-    editItem(item) {
-      this.editProduct = item;
+    async showDetails(item) {
+      const responseData = await ProductsApi.getProductById(item.id);
+      const data = await responseData.json();
+      if (data.userId) {
+        this.user = await UsersViwes.findUserById(data.userId);
+        this.product = ProductsViews.productDetails(data, this.user.name);
+      } else {
+        this.product = ProductsViews.productDetails(data);
+      }
+
+      this.detailsPopup = true;
+    },
+
+    async editItem(item) {
+      const responseData = await ProductsApi.getProductById(item.id);
+      const data = await responseData.json();
+      this.editProduct = data;
       this.popup = true;
     },
 
@@ -94,11 +123,13 @@ export default {
       this.popup = false;
 
       if (e.id && !this.userPopup) {
-        console.log(await ProductsViews.editProduct(e));
+        console.log(await ProductsApi.editProduct(e));
       }
       this.userPopup = false;
+      this.detailsPopup = false;
       this.user = null;
       this.editProduct = null;
+      this.product = null;
     },
 
     async showUser(product) {

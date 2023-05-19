@@ -1,21 +1,39 @@
-import ProductsApi from "../aip/productsService.js";
-
 class ProductsViews {
   populateProducts(responseJson) {
-    // console.log(responseJson);
-    // todo map viw model from response data
-    return responseJson;
+    return responseJson.map((product) =>
+      this.productIdNameDectpitionPrice(product)
+    );
   }
 
-  async editProduct(product) {
-    const responseData = await ProductsApi.editProduct(product);
-    return responseData.status === 200 ? true : false;
+  productIdNameDectpitionPrice(product) {
+    return {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+    };
   }
 
-  setUser(product, userid) {
-    product["userId"] = userid;
-    ProductsApi.editProduct(product);
+  productDetails(product, userName = "No User") {
+    product.userId = userName;
+    return product;
   }
+
+  editProductView(product) {
+    return {
+      name: product.name,
+      description: product.description,
+      features: product.features,
+      price: product.price,
+      category: product.category,
+      subcategory: product.subcategory,
+    };
+  }
+
+  //   setUser(product, userid) {
+  //     product["userId"] = userid;
+  //     ProductsApi.editProduct(product);
+  //   }
 }
 
 export default new ProductsViews();

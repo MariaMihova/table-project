@@ -4,9 +4,8 @@
       <form @submit.prevent="onSubmit">
         <div v-for="(value, key) in formData" v-bind:key="key">
           <label>{{ key }}</label>
-          <input type="text" v-model="formData[key]" />
+          <input type="text" v-model="formData[key]" disabled />
         </div>
-        <button class="submit" id="save">Save</button>
         <button class="submit" id="close">Close</button>
       </form>
     </v-card>
@@ -14,19 +13,15 @@
 </template>
 
 <script>
-import ProductsViews from "@/viewModels/productsViews";
 export default {
   props: ["toEdit", "isOpen", "close"],
-
   methods: {
     onSubmit(e) {
-      this.formData.id = this.id;
       this.$emit("close", e.submitter.id === "save" ? this.formData : {});
       this.formData = {};
     },
     getEditPerson() {
-      this.id = this.toEdit.id;
-      Object.assign(this.formData, ProductsViews.editProductView(this.toEdit));
+      Object.assign(this.formData, this.toEdit);
     },
   },
   watch: {
@@ -52,7 +47,6 @@ export default {
   },
   data() {
     return {
-      id: undefined,
       formData: {},
     };
   },
