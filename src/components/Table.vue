@@ -5,11 +5,11 @@
       v-bind:toEdit="editProduct"
       @close="closeForm"
     ></Popup>
-    <Popup
+    <Details
       v-bind:isOpen="userPopup"
       v-bind:toEdit="user"
       @close="closeForm"
-    ></Popup>
+    ></Details>
     <Details
       v-bind:isOpen="detailsPopup"
       v-bind:toEdit="product"
@@ -56,6 +56,7 @@
 import Popup from "./Popup.vue";
 import Details from "./Details.vue";
 import ProductsApi from "../aip/productsService.js";
+import UsersApi from "../aip/usersService.js";
 import ProductsViews from "../viewModels/productsViews.js";
 import UsersViwes from "../viewModels/usersViews.js";
 
@@ -103,7 +104,9 @@ export default {
       const responseData = await ProductsApi.getProductById(item.id);
       const data = await responseData.json();
       if (data.userId) {
-        this.user = await UsersViwes.findUserById(data.userId);
+        const userResponseData = await UsersApi.getUserById(data.userId);
+        const userData = await userResponseData.json();
+        this.user = UsersViwes.userDetails(userData);
         this.product = ProductsViews.productDetails(data, this.user.name);
       } else {
         this.product = ProductsViews.productDetails(data);
@@ -134,7 +137,9 @@ export default {
 
     async showUser(product) {
       if (product.userId) {
-        this.user = await UsersViwes.findUserById(product.userId);
+        const responseData = await UsersApi.getUserById(product.userId);
+        const data = await responseData.json();
+        this.user = UsersViwes.userDetails(data);
         this.userPopup = true;
       }
     },
