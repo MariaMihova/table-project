@@ -1,20 +1,16 @@
 <template>
   <div id="BatInc">
-    <Popup
-      v-bind:isOpen="popup"
-      v-bind:toEdit="editProduct"
-      @close="closeForm"
-    ></Popup>
-    <Details
-      v-bind:isOpen="userPopup"
+    <Popup v-if="popup" v-bind:toEdit="editProduct" @close="closeForm"></Popup>
+    <UserDetails
+      v-if="userPopup"
       v-bind:toEdit="user"
       @close="closeForm"
-    ></Details>
-    <Details
-      v-bind:isOpen="detailsPopup"
+    ></UserDetails>
+    <ProductDetails
+      v-if="detailsPopup"
       v-bind:toEdit="product"
       @close="closeForm"
-    ></Details>
+    ></ProductDetails>
 
     <v-card-title>
       Products
@@ -54,7 +50,8 @@
 
 <script>
 import Popup from "./Popup.vue";
-import Details from "./Details.vue";
+import ProductDetails from "./ProductDetails.vue";
+import UserDetails from "./UserDetails.vue";
 import ProductsApi from "../aip/productsService.js";
 import UsersApi from "../aip/usersService.js";
 import ProductsViews from "../viewModels/productsViews.js";
@@ -63,7 +60,8 @@ import UsersViews from "../viewModels/usersViews.js";
 export default {
   components: {
     Popup,
-    Details,
+    ProductDetails,
+    UserDetails,
   },
 
   data() {
@@ -123,11 +121,10 @@ export default {
     },
 
     async closeForm(e) {
-      this.popup = false;
-
-      if (e.id && !this.userPopup) {
+      if (this.popup && e.id) {
         console.log(await ProductsApi.editProduct(e));
       }
+      this.popup = false;
       this.userPopup = false;
       this.detailsPopup = false;
       this.user = null;
@@ -187,23 +184,5 @@ form {
   text-align: left;
   padding: 40px;
   border-radius: 10px;
-}
-label {
-  color: #aaa;
-  display: inline-block;
-  margin: 25px 0 15px;
-  font-size: 0.6em;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: bold;
-}
-#base {
-  display: block;
-  padding: 10px 6px;
-  width: 100%;
-  box-sizing: border-box;
-  border: none;
-  color: #555;
-  font-size: 1em;
 }
 </style>
