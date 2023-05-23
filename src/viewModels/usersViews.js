@@ -1,4 +1,4 @@
-class UsersViwes {
+class UsersViews{
   userDetails(user) {
     return {
       name: user.name,
@@ -8,4 +8,4 @@ class UsersViwes {
   }
 }
 
-export default new UsersViwes();
+export default new UsersViews();

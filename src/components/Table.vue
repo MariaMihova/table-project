@@ -58,7 +58,7 @@ import Details from "./Details.vue";
 import ProductsApi from "../aip/productsService.js";
 import UsersApi from "../aip/usersService.js";
 import ProductsViews from "../viewModels/productsViews.js";
-import UsersViwes from "../viewModels/usersViews.js";
+import UsersViews from "../viewModels/usersViews.js";
 
 export default {
   components: {
@@ -106,7 +106,7 @@ export default {
       if (data.userId) {
         const userResponseData = await UsersApi.getUserById(data.userId);
         const userData = await userResponseData.json();
-        this.user = UsersViwes.userDetails(userData);
+        this.user = UsersViews.userDetails(userData);
         this.product = ProductsViews.productDetails(data, this.user.name);
       } else {
         this.product = ProductsViews.productDetails(data);
@@ -139,7 +139,7 @@ export default {
       if (product.userId) {
         const responseData = await UsersApi.getUserById(product.userId);
         const data = await responseData.json();
-        this.user = UsersViwes.userDetails(data);
+        this.user = UsersViews.userDetails(data);
         this.userPopup = true;
       }
     },
@@ -178,5 +178,32 @@ export default {
 
 button {
   background-color: #04aa6d;
+}
+
+form {
+  max-width: 420px;
+  margin: 30px auto;
+  background: white;
+  text-align: left;
+  padding: 40px;
+  border-radius: 10px;
+}
+label {
+  color: #aaa;
+  display: inline-block;
+  margin: 25px 0 15px;
+  font-size: 0.6em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+#base {
+  display: block;
+  padding: 10px 6px;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  color: #555;
+  font-size: 1em;
 }
 </style>
