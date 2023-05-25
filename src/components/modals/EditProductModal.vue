@@ -14,7 +14,10 @@
           v-model="formData.subcategory"
           label="Subcategory"
         ></TextInput>
-        <TextArea label="Add comment" v-model="formData.comment"></TextArea>
+        <TextAreaInput
+          label="Add comment"
+          v-model="formData.comment"
+        ></TextAreaInput>
         <v-btn class="submit" id="save" @click="onSave">Save</v-btn>
         <v-btn class="submit" id="close" @click="onClose">Close</v-btn>
       </v-form>
@@ -24,11 +27,11 @@
 
 <script>
 import ProductsViews from "@/viewModels/productsViews";
-import TextArea from "./inputs/TextArea.vue";
-import TextInput from "./inputs/TextInput.vue";
+import TextAreaInput from "../inputs/TextAreaInput.vue";
+import TextInput from "../inputs/TextInput.vue";
 export default {
   components: {
-    TextArea,
+    TextAreaInput,
     TextInput,
   },
   props: ["toEdit", "close"],

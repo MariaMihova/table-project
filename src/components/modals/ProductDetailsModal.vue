@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import TextInput from "./inputs/TextInput.vue";
-import TextArea from "./inputs/TextArea.vue";
+import TextInput from "../inputs/TextInput.vue";
+import TextArea from "../inputs/TextAreaInput.vue";
 export default {
   components: {
     TextInput,

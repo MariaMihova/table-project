@@ -1,16 +1,20 @@
 <template>
   <div id="BatInc">
-    <Popup v-if="popup" v-bind:toEdit="editProduct" @close="closeForm"></Popup>
-    <UserDetails
+    <EditProductModal
+      v-if="popup"
+      v-bind:toEdit="editProduct"
+      @close="closeForm"
+    ></EditProductModal>
+    <UserDetailsModal
       v-if="userPopup"
       v-bind:toEdit="user"
       @close="closeForm"
-    ></UserDetails>
-    <ProductDetails
+    ></UserDetailsModal>
+    <ProductDetailsModal
       v-if="detailsPopup"
       v-bind:toEdit="product"
       @close="closeForm"
-    ></ProductDetails>
+    ></ProductDetailsModal>
 
     <v-card-title>
       Products
@@ -49,9 +53,9 @@
 </template>
 
 <script>
-import Popup from "./Popup.vue";
-import ProductDetails from "./ProductDetails.vue";
-import UserDetails from "./UserDetails.vue";
+import EditProductModal from "./modals/EditProductModal.vue";
+import ProductDetailsModal from "./modals/ProductDetailsModal.vue";
+import UserDetailsModal from "./modals/UserDetailsModal.vue";
 import ProductsApi from "../aip/productsService.js";
 import UsersApi from "../aip/usersService.js";
 import ProductsViews from "../viewModels/productsViews.js";
@@ -59,9 +63,9 @@ import UsersViews from "../viewModels/usersViews.js";
 
 export default {
   components: {
-    Popup,
-    ProductDetails,
-    UserDetails,
+    EditProductModal,
+    ProductDetailsModal,
+    UserDetailsModal,
   },
 
   data() {

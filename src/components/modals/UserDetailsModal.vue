@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import TextInput from "./inputs/TextInput.vue";
+import TextInput from "../inputs/TextInput.vue";
 export default {
   components: {
     TextInput,
