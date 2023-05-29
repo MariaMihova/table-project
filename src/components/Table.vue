@@ -1,18 +1,18 @@
 <template>
   <div id="BatInc">
     <EditProductModal
-      v-if="popup"
-      v-bind:toEdit="editProduct"
+      v-if="modalManager.editProductPopup"
+      v-bind:id="id"
       @close="closeForm"
     ></EditProductModal>
     <UserDetailsModal
-      v-if="userPopup"
-      v-bind:toEdit="user"
+      v-if="modalManager.userPopup"
+      v-bind:id="id"
       @close="closeForm"
     ></UserDetailsModal>
     <ProductDetailsModal
-      v-if="detailsPopup"
-      v-bind:toEdit="product"
+      v-if="modalManager.detailsPopup"
+      v-bind:id="id"
       @close="closeForm"
     ></ProductDetailsModal>
 
@@ -37,7 +37,7 @@
         :search="search"
       >
         <template v-slot:[`item.userId`]="{ item }">
-          <v-btn v-if="item.userId" small @click="showUser(item)">
+          <v-btn v-if="item.userId" small @click="showUser(item.userId)">
             {{ item.userId }}
           </v-btn>
         </template>
@@ -56,10 +56,8 @@
 import EditProductModal from "./modals/EditProductModal.vue";
 import ProductDetailsModal from "./modals/ProductDetailsModal.vue";
 import UserDetailsModal from "./modals/UserDetailsModal.vue";
-import ProductsApi from "../aip/productsService.js";
-import UsersApi from "../aip/usersService.js";
+import ProductsApi from "../api/productsService.js";
 import ProductsViews from "../viewModels/productsViews.js";
-import UsersViews from "../viewModels/usersViews.js";
 
 export default {
   components: {
@@ -70,12 +68,13 @@ export default {
 
   data() {
     return {
-      editProduct: null,
-      user: null,
-      product: null,
-      popup: false,
-      userPopup: false,
-      detailsPopup: false,
+      id: null,
+      modalManager: {
+        editProductPopup: false,
+        userPopup: false,
+        detailsPopup: false,
+      },
+
       search: "",
       headers: [
         {
@@ -102,47 +101,40 @@ export default {
   },
 
   methods: {
-    async showDetails(item) {
-      const responseData = await ProductsApi.getProductById(item.id);
-      const data = await responseData.json();
-      if (data.userId) {
-        const userResponseData = await UsersApi.getUserById(data.userId);
-        const userData = await userResponseData.json();
-        this.user = UsersViews.userDetails(userData);
-        this.product = ProductsViews.productDetails(data, this.user.name);
-      } else {
-        this.product = ProductsViews.productDetails(data);
-      }
-
-      this.detailsPopup = true;
+    showDetails(item) {
+      this.id = item.id;
+      this.modalsStateManager("detailsPopup");
     },
 
-    async editItem(item) {
-      const responseData = await ProductsApi.getProductById(item.id);
-      const data = await responseData.json();
-      this.editProduct = data;
-      this.popup = true;
+    editItem(item) {
+      this.id = item.id;
+      this.modalsStateManager("editProductPopup");
+    },
+    showUser(id) {
+      this.id = id;
+      this.modalsStateManager("userPopup");
     },
 
     async closeForm(e) {
-      if (this.popup && e.id) {
-        console.log(await ProductsApi.editProduct(e));
+      if (this.modalManager.editProductPopup) {
+        if (e.id) {
+          console.log(await ProductsApi.editProduct(e));
+        }
+        this.modalsStateManager("editProductPopup");
       }
-      this.popup = false;
-      this.userPopup = false;
-      this.detailsPopup = false;
-      this.user = null;
-      this.editProduct = null;
-      this.product = null;
+
+      if (this.modalManager.userPopup) {
+        this.modalsStateManager("userPopup");
+      }
+
+      if (this.modalManager.detailsPopup) {
+        this.modalsStateManager("detailsPopup");
+      }
+      this.id = null;
     },
 
-    async showUser(product) {
-      if (product.userId) {
-        const responseData = await UsersApi.getUserById(product.userId);
-        const data = await responseData.json();
-        this.user = UsersViews.userDetails(data);
-        this.userPopup = true;
-      }
+    modalsStateManager(popupName) {
+      this.modalManager[popupName] = !this.modalManager[popupName];
     },
   },
 };

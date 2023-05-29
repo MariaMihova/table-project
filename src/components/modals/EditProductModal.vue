@@ -9,7 +9,7 @@
         ></TextInput>
         <TextInput v-model="formData.features" label="Features"></TextInput>
         <TextInput v-model="formData.price" label="Price"></TextInput>
-        <TextInput v-model="formData.category" label="Category"></TextInput>
+        <SelectInput v-model="formData.category" label="Category"></SelectInput>
         <TextInput
           v-model="formData.subcategory"
           label="Subcategory"
@@ -18,6 +18,7 @@
           label="Add comment"
           v-model="formData.comment"
         ></TextAreaInput>
+        <DatePicker v-model="formData.date" label="Date"></DatePicker>
         <v-btn class="submit" id="save" @click="onSave">Save</v-btn>
         <v-btn class="submit" id="close" @click="onClose">Close</v-btn>
       </v-form>
@@ -29,19 +30,23 @@
 import ProductsViews from "@/viewModels/productsViews";
 import TextAreaInput from "../inputs/TextAreaInput.vue";
 import TextInput from "../inputs/TextInput.vue";
+import ProductsApi from "../../api/productsService.js";
+import SelectInput from "../inputs/SelectInput.vue";
+import DatePicker from "../inputs/DatePicker.vue";
 export default {
   components: {
     TextAreaInput,
     TextInput,
+    SelectInput,
+    DatePicker,
   },
-  props: ["toEdit", "close"],
+  props: ["id", "close"],
   created() {
     this.populateForm();
     this.show = true;
   },
   data() {
     return {
-      id: undefined,
       formData: null,
       show: true,
     };
@@ -58,12 +63,10 @@ export default {
       this.show = false;
       this.formData = {};
     },
-    populateForm() {
-      this.id = this.toEdit.id;
-      this.formData = Object.assign(
-        {},
-        ProductsViews.editProductView(this.toEdit)
-      );
+    async populateForm() {
+      const responseData = await ProductsApi.getProductById(this.id);
+      const data = await responseData.json();
+      this.formData = Object.assign({}, ProductsViews.editProductView(data));
     },
   },
 };

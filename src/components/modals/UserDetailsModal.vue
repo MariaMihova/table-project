@@ -5,6 +5,7 @@
       <v-form v-if="formData" ref="form">
         <v-btn class="submit" @click="onSubmit">Close</v-btn>
         <TextInput v-model="formData.name" label="Name"></TextInput>
+        <NumberInput v-model="formData.age" label="Age"></NumberInput>
         <TextInput v-model="formData.company" label="Company"></TextInput>
         <TextInput v-model="formData.email" label="Email"></TextInput>
       </v-form>
@@ -14,13 +15,17 @@
 
 <script>
 import TextInput from "../inputs/TextInput.vue";
+import UsersApi from "../../api/usersService.js";
+import UsersViews from "../../viewModels/usersViews.js";
+import NumberInput from "../inputs/NumberInput.vue";
 export default {
   components: {
     TextInput,
+    NumberInput,
   },
-  props: ["toEdit", "close"],
+  props: ["id", "close"],
   created() {
-    this.populateForm();
+    this.populateUsers();
     this.show = true;
   },
   data() {
@@ -35,9 +40,12 @@ export default {
       this.show = false;
       this.formData = {};
     },
-    populateForm() {
-      this.formData = Object.assign({}, this.toEdit);
-      console.log(this.formData);
+
+    async populateUsers() {
+      const responseData = await UsersApi.getUserById(this.id);
+      const data = await responseData.json();
+      const user = UsersViews.userDetails(data);
+      this.formData = Object.assign({}, user);
     },
   },
 };

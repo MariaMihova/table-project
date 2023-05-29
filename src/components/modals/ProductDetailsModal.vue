@@ -4,7 +4,7 @@
       <div v-if="formData">{{ formData.name }}</div>
       <v-form v-if="formData" ref="form">
         <v-btn class="submit" @click="onSubmit">Close</v-btn>
-        <TextInput v-model="formData.id" label="Id"></TextInput>
+        <TextInput v-model="formData.id" label="Id" disabled></TextInput>
         <TextInput v-model="formData.name" label="Name"></TextInput>
         <TextInput
           v-model="formData.description"
@@ -29,12 +29,16 @@
 <script>
 import TextInput from "../inputs/TextInput.vue";
 import TextArea from "../inputs/TextAreaInput.vue";
+import UsersApi from "../../api/usersService.js";
+import ProductsApi from "../../api/productsService.js";
+import UsersViews from "../../viewModels/usersViews.js";
+import ProductsViews from "../../viewModels/productsViews.js";
 export default {
   components: {
     TextInput,
     TextArea,
   },
-  props: ["toEdit", "close"],
+  props: ["id", "close"],
   created() {
     this.populateForm();
     this.show = true;
@@ -51,8 +55,20 @@ export default {
       this.show = false;
       this.formData = {};
     },
-    populateForm() {
-      this.formData = Object.assign({}, this.toEdit);
+    async populateForm() {
+      const responseData = await ProductsApi.getProductById(this.id);
+      const data = await responseData.json();
+      if (data.userId) {
+        const userResponseData = await UsersApi.getUserById(data.userId);
+        const userData = await userResponseData.json();
+        const user = UsersViews.userDetails(userData);
+        this.formData = Object.assign(
+          {},
+          ProductsViews.productDetails(data, user.name)
+        );
+      } else {
+        this.formData = Object.assign({}, data);
+      }
     },
   },
 };

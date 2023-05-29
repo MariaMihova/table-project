@@ -1,7 +1,8 @@
-class UsersViews{
+class UsersViews {
   userDetails(user) {
     return {
       name: user.name,
+      age: user.age,
       company: user.company,
       email: user.email,
     };

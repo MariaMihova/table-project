@@ -1,16 +1,12 @@
 <template>
-  <v-container fluid>
-    <v-row align="center">
-      <v-col class="d-flex" cols="12" sm="16">
-        <v-select
-          @input="emitInput"
-          :label="label"
-          :value="textValue"
-          :items="items"
-        ></v-select>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-row justify="space-around">
+    <v-date-picker
+      @input="emitInput"
+      :label="label"
+      :value="textValue"
+      color="green lighten-1"
+    ></v-date-picker>
+  </v-row>
 </template>
 
 <script>
@@ -26,14 +22,6 @@ export default {
   },
   data: () => ({
     textValue: "",
-    items: [
-      "accessories",
-      "apparel",
-      "bags",
-      "drinkware",
-      "office",
-      "shop by brand",
-    ],
   }),
   watch: {
     value(val) {
