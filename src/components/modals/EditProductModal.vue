@@ -8,12 +8,17 @@
           label="Description"
         ></TextInput>
         <TextInput v-model="formData.features" label="Features"></TextInput>
-        <TextInput v-model="formData.price" label="Price"></TextInput>
-        <SelectInput v-model="formData.category" label="Category"></SelectInput>
-        <TextInput
+        <NumberInput v-model="formData.price" label="Price"></NumberInput>
+        <SelectInput
+          v-model="formData.category"
+          label="Category"
+          :items="categoriesNames"
+        ></SelectInput>
+        <SelectInput
           v-model="formData.subcategory"
           label="Subcategory"
-        ></TextInput>
+          :items="subcategories"
+        ></SelectInput>
         <TextAreaInput
           label="Add comment"
           v-model="formData.comment"
@@ -33,14 +38,17 @@ import TextInput from "../inputs/TextInput.vue";
 import ProductsApi from "../../api/productsService.js";
 import SelectInput from "../inputs/SelectInput.vue";
 import DatePicker from "../inputs/DatePicker.vue";
+import NumberInput from "../inputs/NumberInput.vue";
+import { categories } from "@/helpers/Categories";
 export default {
   components: {
     TextAreaInput,
     TextInput,
     SelectInput,
     DatePicker,
+    NumberInput,
   },
-  props: ["id", "close"],
+  props: ["productId", "close"],
   created() {
     this.populateForm();
     this.show = true;
@@ -49,6 +57,8 @@ export default {
     return {
       formData: null,
       show: true,
+      categoriesNames: [],
+      subcategories: [],
     };
   },
   methods: {
@@ -58,15 +68,19 @@ export default {
       this.formData = {};
     },
     onSave() {
-      this.formData.id = this.id;
+      this.formData.id = this.productId;
       this.$emit("close", this.formData);
       this.show = false;
       this.formData = {};
     },
     async populateForm() {
-      const responseData = await ProductsApi.getProductById(this.id);
+      const responseData = await ProductsApi.getProductById(this.productId);
       const data = await responseData.json();
       this.formData = Object.assign({}, ProductsViews.editProductView(data));
+      for (let category in categories) {
+        this.categoriesNames.push(category);
+      }
+      this.subcategories = categories[this.formData.category].subcategories;
     },
   },
 };

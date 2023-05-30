@@ -5,6 +5,7 @@
     :value="textValue"
     filled
     outlined
+    v-bind="$attrs"
   ></v-textarea>
 </template>
 

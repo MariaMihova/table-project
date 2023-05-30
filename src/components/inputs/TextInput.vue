@@ -1,5 +1,10 @@
 <template>
-  <v-text-field @input="emitInput" :label="label" :value="textValue" />
+  <v-text-field
+    @input="emitInput"
+    :label="label"
+    :value="textValue"
+    v-bind="$attrs"
+  />
 </template>
 
 <script>

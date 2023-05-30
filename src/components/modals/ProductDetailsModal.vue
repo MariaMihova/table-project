@@ -5,22 +5,49 @@
       <v-form v-if="formData" ref="form">
         <v-btn class="submit" @click="onSubmit">Close</v-btn>
         <TextInput v-model="formData.id" label="Id" disabled></TextInput>
-        <TextInput v-model="formData.name" label="Name"></TextInput>
+        <TextInput v-model="formData.name" label="Name" disabled></TextInput>
         <TextInput
           v-model="formData.description"
           label="Description"
+          disabled
         ></TextInput>
-        <TextInput v-model="formData.features" label="Features"></TextInput>
-        <TextInput v-model="formData.price" label="Price"></TextInput>
-        <TextInput v-model="formData.keywords" label="Keywords"></TextInput>
-        <TextInput v-model="formData.url" label="Url"></TextInput>
-        <TextInput v-model="formData.category" label="Category"></TextInput>
+        <TextInput
+          v-model="formData.features"
+          label="Features"
+          disabled
+        ></TextInput>
+        <NumberInput
+          v-model="formData.price"
+          label="Price"
+          type="number"
+          disabled
+        ></NumberInput>
+        <TextInput
+          v-model="formData.keywords"
+          label="Keywords"
+          disabled
+        ></TextInput>
+        <TextInput v-model="formData.url" label="Url" disabled></TextInput>
+        <TextInput
+          v-model="formData.category"
+          label="Category"
+          disabled
+        ></TextInput>
         <TextInput
           v-model="formData.subcategory"
           label="Subcategory"
+          disabled
         ></TextInput>
-        <TextInput v-model="formData.userId" label="UserId"></TextInput>
-        <TextArea label="Add comment" v-model="formData.comment"></TextArea>
+        <TextInput
+          v-model="formData.userId"
+          label="UserId"
+          disabled
+        ></TextInput>
+        <TextArea
+          label="Comment"
+          v-model="formData.comment"
+          disabled
+        ></TextArea>
       </v-form>
     </v-card>
   </v-dialog>
@@ -33,12 +60,16 @@ import UsersApi from "../../api/usersService.js";
 import ProductsApi from "../../api/productsService.js";
 import UsersViews from "../../viewModels/usersViews.js";
 import ProductsViews from "../../viewModels/productsViews.js";
+import NumberInput from "../inputs/NumberInput.vue";
+
 export default {
+  inheritAttrs: false,
   components: {
     TextInput,
     TextArea,
+    NumberInput,
   },
-  props: ["id", "close"],
+  props: ["productId", "close"],
   created() {
     this.populateForm();
     this.show = true;
@@ -56,7 +87,7 @@ export default {
       this.formData = {};
     },
     async populateForm() {
-      const responseData = await ProductsApi.getProductById(this.id);
+      const responseData = await ProductsApi.getProductById(this.productId);
       const data = await responseData.json();
       if (data.userId) {
         const userResponseData = await UsersApi.getUserById(data.userId);

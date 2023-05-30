@@ -7,6 +7,7 @@
           :label="label"
           :value="textValue"
           :items="items"
+          v-bind="$attrs"
         ></v-select>
       </v-col>
     </v-row>
@@ -23,17 +24,13 @@ export default {
     value: {
       type: String,
     },
+    items: {
+      type: Array,
+      required: true,
+    },
   },
   data: () => ({
     textValue: "",
-    items: [
-      "accessories",
-      "apparel",
-      "bags",
-      "drinkware",
-      "office",
-      "shop by brand",
-    ],
   }),
   watch: {
     value(val) {

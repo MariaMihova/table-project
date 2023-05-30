@@ -1,35 +1,39 @@
 <template>
-    <v-text-field @input="emitInput" :label="label" :value="textValue" />
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      label: {
-        type: String,
-        required: true,
-      },
-      value: {
-        type: Number,
-      },
+  <v-text-field
+    @input="emitInput"
+    :label="label"
+    :value="textValue"
+    v-bind="$attrs"
+  />
+</template>
+
+<script>
+export default {
+  props: {
+    label: {
+      type: String,
+      required: true,
     },
-    data: () => ({
-      textValue: "",
-    }),
-    watch: {
-      value(val) {
-        this.textValue = val;
-      },
+    value: {
+      type: [String, Number],
     },
-    created() {
-      this.textValue = this.value;
+  },
+  data: () => ({
+    textValue: "",
+  }),
+  watch: {
+    value(val) {
+      this.textValue = Number(val);
     },
-    methods: {
-      emitInput(val) {
-        this.textValue = val;
-        this.$emit("input", this.textValue);
-      },
+  },
+  created() {
+    this.textValue = Number(this.value);
+  },
+  methods: {
+    emitInput(val) {
+      this.textValue = val;
+      this.$emit("input", this.textValue);
     },
-  };
-  </script>
-  
+  },
+};
+</script>

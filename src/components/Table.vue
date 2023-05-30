@@ -2,17 +2,17 @@
   <div id="BatInc">
     <EditProductModal
       v-if="modalManager.editProductPopup"
-      v-bind:id="id"
+      v-bind:productId="selectedId"
       @close="closeForm"
     ></EditProductModal>
     <UserDetailsModal
       v-if="modalManager.userPopup"
-      v-bind:id="id"
+      v-bind:userId="selectedId"
       @close="closeForm"
     ></UserDetailsModal>
     <ProductDetailsModal
       v-if="modalManager.detailsPopup"
-      v-bind:id="id"
+      v-bind:productId="selectedId"
       @close="closeForm"
     ></ProductDetailsModal>
 
@@ -30,6 +30,7 @@
 
     <template>
       <v-data-table
+        v-if="headers"
         :headers="headers"
         :items="products"
         :items-per-page="10"
@@ -58,6 +59,7 @@ import ProductDetailsModal from "./modals/ProductDetailsModal.vue";
 import UserDetailsModal from "./modals/UserDetailsModal.vue";
 import ProductsApi from "../api/productsService.js";
 import ProductsViews from "../viewModels/productsViews.js";
+import TableHeaders from "@/helpers/TableHeaders";
 
 export default {
   components: {
@@ -68,7 +70,7 @@ export default {
 
   data() {
     return {
-      id: null,
+      selectedId: null,
       modalManager: {
         editProductPopup: false,
         userPopup: false,
@@ -76,14 +78,7 @@ export default {
       },
 
       search: "",
-      headers: [
-        {
-          text: "#",
-          align: "start",
-          sortable: false,
-          value: "index",
-        },
-      ],
+      headers: [],
       products: [],
     };
   },
@@ -92,32 +87,36 @@ export default {
     const responseData = await ProductsApi.getAllProducts();
     const data = await responseData.json();
     this.products = ProductsViews.populateProducts(data);
-    for (let prop in this.products[0]) {
-      this.headers.push({ text: prop, value: prop });
-    }
+    this.headers = TableHeaders.getProductHeaders();
 
-    this.headers.push({ text: "Details", value: "details" });
-    this.headers.push({ text: "Edit", value: "action" });
+    // for (let prop in this.products[0]) {
+    //   console.log(prop);
+    //   this.headers.push({ text: prop, value: prop });
+    // }
+
+    // this.headers.push({ text: "Details", value: "details" });
+    // this.headers.push({ text: "Edit", value: "action" });
   },
 
   methods: {
     showDetails(item) {
-      this.id = item.id;
+      this.selectedId = item.id;
       this.modalsStateManager("detailsPopup");
     },
 
     editItem(item) {
-      this.id = item.id;
+      this.selectedId = item.id;
       this.modalsStateManager("editProductPopup");
     },
     showUser(id) {
-      this.id = id;
+      this.selectedId = id;
       this.modalsStateManager("userPopup");
     },
 
     async closeForm(e) {
       if (this.modalManager.editProductPopup) {
         if (e.id) {
+          console.log("date from closeForme in Tabe", e.date);
           console.log(await ProductsApi.editProduct(e));
         }
         this.modalsStateManager("editProductPopup");
@@ -130,7 +129,7 @@ export default {
       if (this.modalManager.detailsPopup) {
         this.modalsStateManager("detailsPopup");
       }
-      this.id = null;
+      this.selectedId = null;
     },
 
     modalsStateManager(popupName) {
