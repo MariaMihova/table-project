@@ -34,12 +34,13 @@
 <script>
 import ProductsViews from "@/viewModels/productsViews";
 import TextAreaInput from "../inputs/TextAreaInput.vue";
+import categoriesViews from "@/viewModels/categoriesViews";
 import TextInput from "../inputs/TextInput.vue";
 import ProductsApi from "../../api/productsService.js";
+import CategoriesApi from "../../api/categoriesService.js";
 import SelectInput from "../inputs/SelectInput.vue";
 import DatePicker from "../inputs/DatePicker.vue";
 import NumberInput from "../inputs/NumberInput.vue";
-import { categories } from "@/helpers/Categories";
 export default {
   components: {
     TextAreaInput,
@@ -77,10 +78,15 @@ export default {
       const responseData = await ProductsApi.getProductById(this.productId);
       const data = await responseData.json();
       this.formData = Object.assign({}, ProductsViews.editProductView(data));
-      for (let category in categories) {
-        this.categoriesNames.push(category);
-      }
-      this.subcategories = categories[this.formData.category].subcategories;
+
+      const categoriesResponse = await CategoriesApi.getAllCategories();
+      const categories = await categoriesResponse.json();
+      this.categoriesNames = categoriesViews.categoriesNames(categories);
+
+      this.subcategories = categoriesViews.subcategorysByCategoryName(
+        this.formData.category,
+        categories
+      );
     },
   },
 };

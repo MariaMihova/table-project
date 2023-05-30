@@ -116,7 +116,6 @@ export default {
     async closeForm(e) {
       if (this.modalManager.editProductPopup) {
         if (e.id) {
-          console.log("date from closeForme in Tabe", e.date);
           console.log(await ProductsApi.editProduct(e));
         }
         this.modalsStateManager("editProductPopup");

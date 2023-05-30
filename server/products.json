@@ -1,4 +1,53 @@
 {
+  "categories": [
+    {
+      "id": 1,
+      "name": "accessories",
+      "subcategories": [
+        "accessories",
+        "lifestyle"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "apparel",
+      "subcategories": [
+        "apparel",
+        "headgear",
+        "kid's",
+        "women's-T-Shirts"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "bags",
+      "subcategories": [
+        "bags"
+      ]
+    },
+    {
+      "name": "drinkware",
+      "subcategories": [
+        "drinkware"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "office",
+      "subcategories": [
+        "office",
+        "notebooks & Journals",
+        "writing Instruments"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "shop by brand",
+      "subcategories": [
+        "waze"
+      ]
+    }
+  ],
   "users": [
     {
       "id": "1",

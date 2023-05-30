@@ -50,15 +50,11 @@ export default {
   }),
   watch: {
     value(val) {
-      console.log("date before val from watch", this.date);
-      console.log("val from watch", val);
       this.date = val;
-      console.log("date after val from watch", this.date);
     },
   },
   created() {
     this.date = this.value;
-    console.log("date from create", this.date);
   },
   methods: {
     emitInput(val) {
