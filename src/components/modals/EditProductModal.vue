@@ -34,7 +34,7 @@
 <script>
 import ProductsViews from "@/viewModels/productsViews";
 import TextAreaInput from "../inputs/TextAreaInput.vue";
-import categoriesViews from "@/viewModels/categoriesViews";
+import CategoriesViews from "@/viewModels/categoriesViews";
 import TextInput from "../inputs/TextInput.vue";
 import ProductsApi from "../../api/productsService.js";
 import CategoriesApi from "../../api/categoriesService.js";
@@ -81,9 +81,9 @@ export default {
 
       const categoriesResponse = await CategoriesApi.getAllCategories();
       const categories = await categoriesResponse.json();
-      this.categoriesNames = categoriesViews.categoriesNames(categories);
+      this.categoriesNames = CategoriesViews.categoriesNames(categories);
 
-      this.subcategories = categoriesViews.subcategorysByCategoryName(
+      this.subcategories = CategoriesViews.subcategorysByCategoryName(
         this.formData.category,
         categories
       );

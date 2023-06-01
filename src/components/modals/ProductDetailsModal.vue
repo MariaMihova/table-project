@@ -1,73 +1,38 @@
 <template>
   <v-dialog v-model="show" width="70%" class="popup" persistent>
-    <v-card>
-      <div v-if="formData">{{ formData.name }}</div>
-      <v-form v-if="formData" ref="form">
-        <v-btn class="submit" @click="onSubmit">Close</v-btn>
-        <TextInput v-model="formData.id" label="Id" disabled></TextInput>
-        <TextInput v-model="formData.name" label="Name" disabled></TextInput>
-        <TextInput
-          v-model="formData.description"
-          label="Description"
-          disabled
-        ></TextInput>
-        <TextInput
-          v-model="formData.features"
-          label="Features"
-          disabled
-        ></TextInput>
-        <NumberInput
-          v-model="formData.price"
-          label="Price"
-          type="number"
-          disabled
-        ></NumberInput>
-        <TextInput
-          v-model="formData.keywords"
-          label="Keywords"
-          disabled
-        ></TextInput>
-        <TextInput v-model="formData.url" label="Url" disabled></TextInput>
-        <TextInput
-          v-model="formData.category"
-          label="Category"
-          disabled
-        ></TextInput>
-        <TextInput
-          v-model="formData.subcategory"
-          label="Subcategory"
-          disabled
-        ></TextInput>
-        <TextInput
-          v-model="formData.userId"
-          label="UserId"
-          disabled
-        ></TextInput>
-        <TextArea
-          label="Comment"
-          v-model="formData.comment"
-          disabled
-        ></TextArea>
-      </v-form>
+    <v-card v-if="productData">
+      <v-card-title>
+        Product details
+        <v-spacer></v-spacer>
+      </v-card-title>
+      <ListItem :value="productData.id" label="Id"></ListItem>
+      <ListItem :value="productData.name" label="Name"></ListItem>
+      <ListItem :value="productData.description" label="Description"></ListItem>
+      <ListItem :value="productData.features" label="Features"></ListItem>
+      <ListItem :value="productData.price" label="Price"></ListItem>
+      <ListItem :value="productData.keywords" label="Keywords"></ListItem>
+      <ListItem :value="productData.url" label="Url"></ListItem>
+      <ListItem :value="productData.category" label="Category"></ListItem>
+      <ListItem :value="productData.subcategory" label="Subcategory"></ListItem>
+      <ListItem :value="productData.userId" label="User id"></ListItem>
+      <ListItem :value="productData.comment" label="Comment"></ListItem>
+      <v-spacer></v-spacer>
+      <v-btn class="submit" @click="onSubmit">Close</v-btn>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import TextInput from "../inputs/TextInput.vue";
-import TextArea from "../inputs/TextAreaInput.vue";
 import UsersApi from "../../api/usersService.js";
 import ProductsApi from "../../api/productsService.js";
 import UsersViews from "../../viewModels/usersViews.js";
 import ProductsViews from "../../viewModels/productsViews.js";
-import NumberInput from "../inputs/NumberInput.vue";
+import ListItem from "../inputs/ListItem.vue";
 
 export default {
   inheritAttrs: false,
   components: {
-    TextInput,
-    TextArea,
-    NumberInput,
+    ListItem,
   },
   props: ["productId", "close"],
   created() {
@@ -77,14 +42,14 @@ export default {
   data() {
     return {
       show: true,
-      formData: null,
+      productData: null,
     };
   },
   methods: {
     onSubmit() {
-      this.$emit("close", this.formData);
+      this.$emit("close", this.productData);
       this.show = false;
-      this.formData = {};
+      this.productData = {};
     },
     async populateForm() {
       const responseData = await ProductsApi.getProductById(this.productId);
@@ -93,12 +58,12 @@ export default {
         const userResponseData = await UsersApi.getUserById(data.userId);
         const userData = await userResponseData.json();
         const user = UsersViews.userDetails(userData);
-        this.formData = Object.assign(
+        this.productData = Object.assign(
           {},
           ProductsViews.productDetails(data, user.name)
         );
       } else {
-        this.formData = Object.assign({}, data);
+        this.productData = Object.assign({}, data);
       }
     },
   },

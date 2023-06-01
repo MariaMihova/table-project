@@ -2,7 +2,6 @@ class TableHeaders {
   getProductHeaders() {
     return [
       {
-        text: "#",
         align: "start",
         sortable: false,
         value: "index",
