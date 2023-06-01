@@ -1,5 +1,5 @@
 <template>
-  <v-list-item @input="emitInput" v-bind="$attrs" two-line>
+  <v-list-item v-bind="$attrs" two-line>
     <v-list-item-content>
       <v-list-item-title>{{ label }}</v-list-item-title>
       <v-list-item-subtitle>{{ value }}</v-list-item-subtitle>
@@ -16,12 +16,6 @@ export default {
     },
     value: {
       type: [String, Number],
-    },
-  },
-
-  methods: {
-    emitInput() {
-      this.$emit("input", this.textValue);
     },
   },
 };

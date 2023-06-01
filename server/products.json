@@ -97,7 +97,8 @@
       "category": "accessories",
       "subcategory": "accessories",
       "userId": "3",
-      "date": "2023-06-02"
+      "date": "2023-06-02",
+      "comment": "Commenting on the product"
     },
     {
       "id": "GGOEAFKA087599",
@@ -110,7 +111,7 @@
       "category": "accessories",
       "subcategory": "accessories",
       "userId": "4",
-      "comment": "another commetn",
+      "comment": "Very good product!",
       "date": "2023-05-31"
     },
     {

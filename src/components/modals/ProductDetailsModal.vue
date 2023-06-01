@@ -14,6 +14,7 @@
       <ListItem :value="productData.url" label="Url"></ListItem>
       <ListItem :value="productData.category" label="Category"></ListItem>
       <ListItem :value="productData.subcategory" label="Subcategory"></ListItem>
+      <ListItem :value="productData.date" label="Date"></ListItem>
       <ListItem :value="productData.userId" label="User id"></ListItem>
       <ListItem :value="productData.comment" label="Comment"></ListItem>
       <v-spacer></v-spacer>
