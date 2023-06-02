@@ -2,6 +2,7 @@
   <v-dialog v-model="show" width="70%" class="popup" persistent>
     <v-card>
       <v-form v-if="formData" ref="form">
+        <TextInput v-model="formData.id" label="Id" disabled></TextInput>
         <TextInput v-model="formData.name" label="Name"></TextInput>
         <TextInput
           v-model="formData.description"
@@ -42,6 +43,7 @@ import SelectInput from "../inputs/SelectInput.vue";
 import DatePicker from "../inputs/DatePicker.vue";
 import NumberInput from "../inputs/NumberInput.vue";
 export default {
+  inheritAttrs: false,
   components: {
     TextAreaInput,
     TextInput,
@@ -64,12 +66,11 @@ export default {
   },
   methods: {
     onClose() {
-      this.$emit("close", {});
+      this.$emit("close");
       this.show = false;
       this.formData = {};
     },
     onSave() {
-      this.formData.id = this.productId;
       this.$emit("close", this.formData);
       this.show = false;
       this.formData = {};

@@ -22,6 +22,7 @@ class ProductsViews {
 
   editProductView(product) {
     return {
+      id: product.id,
       name: product.name,
       description: product.description,
       features: product.features,

@@ -1,26 +1,10 @@
 <template>
-  <v-dialog v-model="show" width="70%" class="popup" persistent>
-    <v-card v-if="productData">
-      <v-card-title>
-        Product details
-        <v-spacer></v-spacer>
-      </v-card-title>
-      <ListItem :value="productData.id" label="Id"></ListItem>
-      <ListItem :value="productData.name" label="Name"></ListItem>
-      <ListItem :value="productData.description" label="Description"></ListItem>
-      <ListItem :value="productData.features" label="Features"></ListItem>
-      <ListItem :value="productData.price" label="Price"></ListItem>
-      <ListItem :value="productData.keywords" label="Keywords"></ListItem>
-      <ListItem :value="productData.url" label="Url"></ListItem>
-      <ListItem :value="productData.category" label="Category"></ListItem>
-      <ListItem :value="productData.subcategory" label="Subcategory"></ListItem>
-      <ListItem :value="productData.date" label="Date"></ListItem>
-      <ListItem :value="productData.userId" label="User id"></ListItem>
-      <ListItem :value="productData.comment" label="Comment"></ListItem>
-      <v-spacer></v-spacer>
-      <v-btn class="submit" @click="onSubmit">Close</v-btn>
-    </v-card>
-  </v-dialog>
+  <BaceDetails
+    v-if="productData"
+    :objectData="productData"
+    title="Product Details"
+    @close="emitClose"
+  ></BaceDetails>
 </template>
 
 <script>
@@ -28,31 +12,24 @@ import UsersApi from "../../api/usersService.js";
 import ProductsApi from "../../api/productsService.js";
 import UsersViews from "../../viewModels/usersViews.js";
 import ProductsViews from "../../viewModels/productsViews.js";
-import ListItem from "../inputs/ListItem.vue";
+import BaceDetails from "../slots/BaceDetails.vue";
 
 export default {
   inheritAttrs: false,
   components: {
-    ListItem,
+    BaceDetails,
   },
-  props: ["productId", "close"],
+  props: ["productId"],
   created() {
-    this.populateForm();
-    this.show = true;
+    this.populateProducts();
   },
   data() {
     return {
-      show: true,
       productData: null,
     };
   },
   methods: {
-    onSubmit() {
-      this.$emit("close", this.productData);
-      this.show = false;
-      this.productData = {};
-    },
-    async populateForm() {
+    async populateProducts() {
       const responseData = await ProductsApi.getProductById(this.productId);
       const data = await responseData.json();
       if (data.userId) {
@@ -66,6 +43,9 @@ export default {
       } else {
         this.productData = Object.assign({}, data);
       }
+    },
+    emitClose() {
+      this.$emit("close");
     },
   },
 };

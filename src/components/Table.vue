@@ -76,7 +76,12 @@ export default {
         userPopup: false,
         detailsPopup: false,
       },
-
+      popupName: {
+        editProductPopup: "editProductPopup",
+        userPopup: "userPopup",
+        detailsPopup: "detailsPopup",
+      },
+      openPopup: "",
       search: "",
       headers: [],
       products: [],
@@ -88,51 +93,38 @@ export default {
     const data = await responseData.json();
     this.products = ProductsViews.populateProducts(data);
     this.headers = TableHeaders.getProductHeaders();
-
-    // for (let prop in this.products[0]) {
-    //   console.log(prop);
-    //   this.headers.push({ text: prop, value: prop });
-    // }
-
-    // this.headers.push({ text: "Details", value: "details" });
-    // this.headers.push({ text: "Edit", value: "action" });
   },
 
   methods: {
     showDetails(item) {
       this.selectedId = item.id;
-      this.modalsStateManager("detailsPopup");
+      this.openPopup = this.popupName.detailsPopup;
+      this.modalsStateManager(this.openPopup);
     },
 
     editItem(item) {
       this.selectedId = item.id;
-      this.modalsStateManager("editProductPopup");
+      this.openPopup = this.popupName.editProductPopup;
+      this.modalsStateManager(this.openPopup);
     },
     showUser(id) {
       this.selectedId = id;
-      this.modalsStateManager("userPopup");
+      this.openPopup = this.popupName.userPopup;
+      this.modalsStateManager(this.openPopup);
     },
 
-    async closeForm(e) {
-      if (this.modalManager.editProductPopup) {
-        if (e.id) {
-          console.log(await ProductsApi.editProduct(e));
-        }
-        this.modalsStateManager("editProductPopup");
+    async closeForm(element = {}) {
+      if (element.id) {
+        console.log(await ProductsApi.editProduct(element));
       }
-
-      if (this.modalManager.userPopup) {
-        this.modalsStateManager("userPopup");
-      }
-
-      if (this.modalManager.detailsPopup) {
-        this.modalsStateManager("detailsPopup");
-      }
+      this.modalsStateManager(this.openPopup);
+      this.openPopup = "";
       this.selectedId = null;
     },
 
     modalsStateManager(popupName) {
       this.modalManager[popupName] = !this.modalManager[popupName];
+      console.log(this.modalManager[popupName]);
     },
   },
 };

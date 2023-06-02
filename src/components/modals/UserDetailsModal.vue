@@ -1,53 +1,40 @@
 <template>
-  <v-dialog v-model="show" width="70%" class="popup" persistent>
-    <v-card v-if="userData">
-      <v-card-title>
-        User details
-        <v-spacer></v-spacer>
-      </v-card-title>
-      <ListItem :value="userData.name" label="Name"></ListItem>
-      <ListItem :value="userData.age" label="Age"></ListItem>
-      <ListItem :value="userData.company" label="Company"></ListItem>
-      <ListItem :value="userData.email" label="Email"></ListItem>
-      <v-spacer></v-spacer>
-      <v-btn class="submit" @click="onSubmit">Close</v-btn>
-    </v-card>
-  </v-dialog>
+  <BaceDetails
+    v-if="userData"
+    :objectData="userData"
+    title="User Details"
+    @close="emitClose"
+  ></BaceDetails>
 </template>
 
 <script>
 import UsersApi from "../../api/usersService.js";
 import UsersViews from "../../viewModels/usersViews.js";
-import ListItem from "../inputs/ListItem.vue";
+import BaceDetails from "../slots/BaceDetails.vue";
 
 export default {
   inheritAttrs: false,
   components: {
-    ListItem,
+    BaceDetails,
   },
-  props: ["userId", "close"],
+  props: ["userId"],
   created() {
     this.populateUsers();
-    this.show = true;
   },
   data() {
     return {
-      show: true,
       userData: null,
     };
   },
   methods: {
-    onSubmit() {
-      this.$emit("close", this.userData);
-      this.show = false;
-      this.userData = {};
-    },
-
     async populateUsers() {
       const responseData = await UsersApi.getUserById(this.userId);
       const data = await responseData.json();
       const user = UsersViews.userDetails(data);
       this.userData = Object.assign({}, user);
+    },
+    emitClose() {
+      this.$emit("close");
     },
   },
 };
