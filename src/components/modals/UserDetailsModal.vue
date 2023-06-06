@@ -3,7 +3,6 @@
     v-if="userData"
     :objectData="userData"
     title="User Details"
-    @close="emitClose"
   ></BaceDetails>
 </template>
 
@@ -32,9 +31,6 @@ export default {
       const data = await responseData.json();
       const user = UsersViews.userDetails(data);
       this.userData = Object.assign({}, user);
-    },
-    emitClose() {
-      this.$emit("close");
     },
   },
 };

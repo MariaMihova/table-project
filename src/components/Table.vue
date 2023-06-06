@@ -67,7 +67,11 @@ export default {
     ProductDetailsModal,
     UserDetailsModal,
   },
-
+  provide() {
+    return {
+      closeForm: this.closeForm,
+    };
+  },
   data() {
     return {
       selectedId: null,

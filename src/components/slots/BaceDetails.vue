@@ -25,6 +25,7 @@ export default {
     ListItem,
   },
   props: ["objectData", "title", "close"],
+  inject: ["closeForm"],
   created() {
     this.displayObject = this.objectData;
     this.show = true;
@@ -38,7 +39,8 @@ export default {
 
   methods: {
     onSubmit() {
-      this.$emit("close");
+      this.closeForm();
+      // this.$emit("close");
       this.show = false;
       this.displayObject = {};
     },

@@ -3,7 +3,6 @@
     v-if="productData"
     :objectData="productData"
     title="Product Details"
-    @close="emitClose"
   ></BaceDetails>
 </template>
 
@@ -43,9 +42,6 @@ export default {
       } else {
         this.productData = Object.assign({}, data);
       }
-    },
-    emitClose() {
-      this.$emit("close");
     },
   },
 };
