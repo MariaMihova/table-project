@@ -1,6 +1,8 @@
+import { use } from "chai";
+
 class ProductsViews {
-  populateProducts(responseJson) {
-    return responseJson.map((product) =>
+  populateProducts(products) {
+    return products.map((product) =>
       this.productIdNameDectpitionPrice(product)
     );
   }
@@ -16,7 +18,9 @@ class ProductsViews {
   }
 
   productDetails(product, userName = "No User") {
-    product.userId = userName;
+    if (userName !== "No User") {
+      product.userId = userName;
+    }
     return product;
   }
 
@@ -36,11 +40,6 @@ class ProductsViews {
             .substring(0, 10),
     };
   }
-
-  //   setUser(product, userid) {
-  //     product["userId"] = userid;
-  //     ProductsApi.editProduct(product);
-  //   }
 }
 
 export default new ProductsViews();

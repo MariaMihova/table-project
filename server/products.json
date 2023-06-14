@@ -91,28 +91,28 @@
       "name": "Android Small Removable Sticker Sheet",
       "description": "Show your Android pride by placing these 8 fun stickers on your technology products or accessories!",
       "features": "<p>8 Android stickers</p>\n<p>White colored sticker sheet</p>",
-      "price": "1.50",
+      "price": "5.22",
       "keywords": "Android Small Removable Sticker Sheet, android stickers, sticker sheets, removable sticker sheets, small sticker sheet, android small sticker sheets, Android Sheet",
       "url": "Android+Small+Removable+Sticker+Sheet",
       "category": "accessories",
       "subcategory": "accessories",
       "userId": "3",
-      "date": "2023-06-02",
-      "comment": "Commenting on the product"
+      "date": "2023-06-15",
+      "comment": "adding a comment"
     },
     {
       "id": "GGOEAFKA087599",
       "name": "Android Large Removable Sticker Sheet",
       "description": "Show your quirky side by placing these fun Android stickers on your personal belongings.",
       "features": "<p>Android Stickers</p>\n<p>White Colored Sticker Sheet</p>",
-      "price": 15,
+      "price": "1",
       "keywords": "Android Large Removable Sticker Sheet, android stickers, sticker sheets, removable sticker sheets, large sticker sheet, android large sticker sheets, Android Sheet",
       "url": "Android+Large+Removable+Sticker+Sheet",
       "category": "accessories",
       "subcategory": "accessories",
       "userId": "4",
       "comment": "Very good product!",
-      "date": "2023-05-31"
+      "date": "2023-05-30"
     },
     {
       "id": "GGOEGEBK094499",
@@ -155,12 +155,13 @@
       "name": "Google Twi",
       "description": "Classic urban styling distinguishes this Google cap. Retains its shape, even when not being worn.",
       "features": "<p>Heavy weight brushed twill</p>\n<p>Adjustable velcro closure</p>\n<p>One size fits all</p>",
-      "price": 10,
+      "price": "12",
       "keywords": "Google Twill Cap, Google Cap, Google Twill Caps, Google Twill, google cap, google caps, google twill, google twill black cap, google black caps, google caps, black caps, Google Caps",
       "url": "Google+Twill+Cap",
       "category": "apparel",
       "subcategory": "apparel",
-      "userId": "1"
+      "userId": "1",
+      "date": "2023-06-13"
     },
     {
       "id": "GGOEGHPJ094299",
@@ -196,7 +197,8 @@
       "url": "Waze+Womens+Short+Sleeve+Tee",
       "category": "apparel",
       "subcategory": "apparel",
-      "comment": "Comment"
+      "comment": "Comment",
+      "date": "2023-06-13"
     },
     {
       "id": "GGOEWXXX0828",
@@ -208,7 +210,8 @@
       "url": "Waze+Mens+Short+Sleeve+Tee",
       "category": "apparel",
       "subcategory": "apparel",
-      "date": "2023-05-31"
+      "date": "2023-05-31",
+      "comment": "Adding a comment"
     },
     {
       "id": "GGOEGBRJ037399",

@@ -5,7 +5,7 @@
         <v-card-title> {{ title }} </v-card-title>
         <v-spacer></v-spacer>
         <v-card-text v-for="(prop, key) in displayObject" v-bind:key="key">
-          <ListItem :value="prop" :label="capitalFirsLetter(key)"></ListItem>
+          <ListItem :value="prop" :label="capitalLeter(key)"></ListItem>
         </v-card-text>
         <v-spacer></v-spacer>
         <v-card-text>
@@ -18,6 +18,7 @@
 
 <script>
 import ListItem from "../inputs/ListItem.vue";
+import capitalFirsLetter from "../../helpers/CapitalFirsLetter.js";
 
 export default {
   inheritAttrs: false,
@@ -40,13 +41,11 @@ export default {
   methods: {
     onSubmit() {
       this.closeForm();
-      // this.$emit("close");
       this.show = false;
       this.displayObject = {};
     },
-
-    capitalFirsLetter(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
+    capitalLeter(str) {
+      return capitalFirsLetter(str);
     },
   },
 };

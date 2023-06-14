@@ -1,14 +1,13 @@
 <template>
   <BaceDetails
-    v-if="userData"
+    v-if="users.length > 0"
     :objectData="userData"
     title="User Details"
   ></BaceDetails>
 </template>
 
 <script>
-import UsersApi from "../../api/usersService.js";
-import UsersViews from "../../viewModels/usersViews.js";
+import usersViews from "@/viewModels/usersViews";
 import BaceDetails from "../slots/BaceDetails.vue";
 
 export default {
@@ -17,27 +16,20 @@ export default {
     BaceDetails,
   },
   props: ["userId"],
-  created() {
-    this.populateUsers();
-  },
-  data() {
-    return {
-      userData: null,
-    };
-  },
-  methods: {
-    async populateUsers() {
-      const responseData = await UsersApi.getUserById(this.userId);
-      const data = await responseData.json();
-      const user = UsersViews.userDetails(data);
-      this.userData = Object.assign({}, user);
+  computed: {
+    users() {
+      return this.$store.getters.getUsers;
     },
+    userData() {
+      return usersViews.userDetails(
+        this.$store.getters.getUserById(this.userId)
+      );
+    },
+  },
+  mounted() {
+    if (this.users.length <= 0) {
+      this.$store.dispatch("populateUsers");
+    }
   },
 };
 </script>
-
-<!-- "id": "1",
-  "age": 23,
-  "name": "Bird Ramsey",
-  "company": "NIMON",
-  "email": "birdramsey@nimon.com" -->

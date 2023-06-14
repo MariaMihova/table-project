@@ -13,6 +13,7 @@ class TableHeaders {
       { text: "Uder Id", value: "userId" },
       { text: "Details", value: "details" },
       { text: "Edit", value: "action" },
+      { text: "Add to cart", value: "add" },
     ];
   }
 }

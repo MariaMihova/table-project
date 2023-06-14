@@ -1,10 +1,10 @@
 <template>
   <div id="BatInc">
-    <EditProductModal
+    <!-- <EditProductModal
       v-if="modalManager.editProductPopup"
       v-bind:productId="selectedId"
       @close="closeForm"
-    ></EditProductModal>
+    ></EditProductModal> -->
     <UserDetailsModal
       v-if="modalManager.userPopup"
       v-bind:userId="selectedId"
@@ -48,22 +48,23 @@
         <template v-slot:[`item.action`]="{ item }">
           <v-btn small @click="editItem(item)"> Edit </v-btn>
         </template>
+        <template v-slot:[`item.add`]="{ item }">
+          <v-btn small @click="addToCart(item)">Add to cart</v-btn>
+        </template>
       </v-data-table>
     </template>
   </div>
 </template>
 
 <script>
-import EditProductModal from "./modals/EditProductModal.vue";
+import EditProduct from "./EditProduct.vue";
 import ProductDetailsModal from "./modals/ProductDetailsModal.vue";
 import UserDetailsModal from "./modals/UserDetailsModal.vue";
-import ProductsApi from "../api/productsService.js";
-import ProductsViews from "../viewModels/productsViews.js";
 import TableHeaders from "@/helpers/TableHeaders";
+import productsViews from "@/viewModels/productsViews";
 
 export default {
   components: {
-    EditProductModal,
     ProductDetailsModal,
     UserDetailsModal,
   },
@@ -72,6 +73,7 @@ export default {
       closeForm: this.closeForm,
     };
   },
+  props: ["add"],
   data() {
     return {
       selectedId: null,
@@ -88,14 +90,19 @@ export default {
       openPopup: "",
       search: "",
       headers: [],
-      products: [],
     };
   },
 
-  async mounted() {
-    const responseData = await ProductsApi.getAllProducts();
-    const data = await responseData.json();
-    this.products = ProductsViews.populateProducts(data);
+  computed: {
+    products() {
+      return productsViews.populateProducts(this.$store.getters.allProducts);
+    },
+  },
+
+  mounted() {
+    // if (this.products.length <= 0) {
+    this.$store.dispatch("allProducts");
+    // }
     this.headers = TableHeaders.getProductHeaders();
   },
 
@@ -107,19 +114,20 @@ export default {
     },
 
     editItem(item) {
-      this.selectedId = item.id;
-      this.openPopup = this.popupName.editProductPopup;
-      this.modalsStateManager(this.openPopup);
+      this.$router.push({ path: `products/edit/${item.id}` });
     },
     showUser(id) {
       this.selectedId = id;
       this.openPopup = this.popupName.userPopup;
       this.modalsStateManager(this.openPopup);
     },
+    addToCart(item) {
+      this.$store.commit("addProductToCart", item);
+    },
 
-    async closeForm(element = {}) {
+    closeForm(element = {}) {
       if (element.id) {
-        console.log(await ProductsApi.editProduct(element));
+        this.$store.dispatch("editProduct", element);
       }
       this.modalsStateManager(this.openPopup);
       this.openPopup = "";
@@ -128,7 +136,6 @@ export default {
 
     modalsStateManager(popupName) {
       this.modalManager[popupName] = !this.modalManager[popupName];
-      console.log(this.modalManager[popupName]);
     },
   },
 };
@@ -176,3 +183,4 @@ form {
   border-radius: 10px;
 }
 </style>
+//router.push({ path: `/user/${username}` })
