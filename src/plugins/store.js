@@ -32,6 +32,10 @@ const store = new Vuex.Store({
         ? state.users.find((u) => u.id === id)
         : null;
     },
+
+    getFurstTenProducts: (state) => {
+      return state.products.slice(0, 10);
+    },
   },
   mutations: {
     addProductToCart(state, item) {
@@ -65,6 +69,7 @@ const store = new Vuex.Store({
       const data = await responseData.json();
       commit("setUsers", data);
     },
+    addFilters({ commit }, filters) {},
   },
 });
 
