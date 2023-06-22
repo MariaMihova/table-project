@@ -14,6 +14,7 @@ class ProductsViews {
       description: product.description,
       price: product.price,
       userId: product.userId,
+      category: product.category,
     };
   }
 

@@ -1,31 +1,43 @@
 <template>
-  <v-card>
-    <v-card-title>Edit product {{ formData.id }} </v-card-title>
-    <v-form v-if="formData" ref="form">
-      <TextInput v-model="formData.id" label="Id" disabled></TextInput>
-      <TextInput v-model="formData.name" label="Name"></TextInput>
-      <TextInput v-model="formData.description" label="Description"></TextInput>
-      <TextInput v-model="formData.features" label="Features"></TextInput>
-      <NumberInput v-model="formData.price" label="Price"></NumberInput>
-      <SelectInput
-        v-model="formData.category"
-        label="Category"
-        :items="categoriesNames"
-      ></SelectInput>
-      <SelectInput
-        v-model="formData.subcategory"
-        label="Subcategory"
-        :items="subcategories"
-      ></SelectInput>
-      <TextAreaInput
-        label="Add comment"
-        v-model="formData.comment"
-      ></TextAreaInput>
-      <DatePicker v-model="formData.date" label="Date"></DatePicker>
-      <v-btn class="submit" id="save" @click="onSave">Save</v-btn>
-      <v-btn class="submit" id="close" @click="onClose">Close</v-btn>
-    </v-form>
-  </v-card>
+  <v-col cols="12" sm="6" offset-sm="3">
+    <v-card width="100%">
+      <v-card-title>Edit product {{ formData.id }} </v-card-title>
+      <v-form v-if="formData" ref="form" class="form">
+        <TextInput v-model="formData.id" label="Id" disabled></TextInput>
+        <TextInput v-model="formData.name" label="Name"></TextInput>
+        <TextInput
+          v-model="formData.description"
+          label="Description"
+        ></TextInput>
+        <TextInput v-model="formData.features" label="Features"></TextInput>
+        <NumberInput v-model="formData.price" label="Price"></NumberInput>
+        <SelectInput
+          v-model="formData.category"
+          label="Category"
+          :items="categoriesNames"
+        ></SelectInput>
+        <SelectInput
+          v-model="formData.subcategory"
+          label="Subcategory"
+          :items="subcategories"
+        ></SelectInput>
+        <TextAreaInput
+          label="Add comment"
+          v-model="formData.comment"
+        ></TextAreaInput>
+        <DatePicker v-model="formData.date" label="Date"></DatePicker>
+
+        <v-container fluid>
+          <v-row align="center">
+            <v-col class="d-flex" cols="12" sm="16">
+              <v-btn class="submit" id="save" @click="onSave">Save</v-btn>
+              <v-btn class="submit" id="close" @click="onClose">Close</v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
+    </v-card>
+  </v-col>
 </template>
 
 <script>
@@ -58,16 +70,7 @@ export default {
       subcategories: [],
     };
   },
-  //    computed: {
-  //     message: {
-  //     get () {
-  //       return this.$store.state.obj.message
-  //     },
-  //     set (value) {
-  //       this.$store.commit('updateMessage', value)
-  //     }
-  //   }
-  // }
+
   computed: {
     products() {
       return this.$store.getters.allProducts;
@@ -86,8 +89,9 @@ export default {
     onClose() {
       this.$router.push({ path: "/products" });
     },
-    onSave() {
-      this.$store.dispatch("editProduct", this.formData);
+    async onSave() {
+      await this.$store.dispatch("editProduct", this.formData);
+
       this.formData = {};
       this.onClose();
     },

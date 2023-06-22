@@ -45,4 +45,7 @@ div[data-app="true"] {
 #tab {
   color: black;
 }
+.btn {
+  background-color: #f7e3ab;
+}
 </style>

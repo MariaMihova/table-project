@@ -2,6 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import ProductsApi from "../api/productsService.js";
 import UsersApi from "../api/usersService.js";
+import CategoriesApi from "../api/categoriesService.js";
+import productsService from "../api/productsService.js";
 
 Vue.use(Vuex);
 
@@ -10,15 +12,50 @@ const store = new Vuex.Store({
     cartProducts: [],
     products: [],
     users: [],
+    categories: [],
+    filters: {
+      categories: [],
+      priceRange: null,
+      userId: null,
+    },
   },
   getters: {
     allProducts: (state) => {
-      return state.products;
+      let products = state.products;
+      if (state.filters && state.filters.categories.length > 0) {
+        products = products.filter((p) => {
+          for (let i = 0; i <= state.filters.categories.length; i++) {
+            if (p.category === state.filters.categories[i]) {
+              return true;
+            }
+          }
+          return false;
+        });
+      }
+      if (state.filters && state.filters.priceRange) {
+        products = products.filter(
+          (p) =>
+            p.price > state.filters.priceRange.min &&
+            p.price < state.filters.priceRange.max
+        );
+      }
+      if (state.filters && state.filters.userId) {
+        products = products.filter((p) => p.userId === state.filters.userId);
+      }
+      return products;
     },
+
     getProductById: (state) => (id) => {
       return state.products.length > 0
         ? state.products.find((p) => p.id === id)
         : null;
+    },
+    getFurstTenProducts: (state) => {
+      return state.products.slice(0, 10);
+    },
+
+    filterbyCategory: (state) => (categoryName) => {
+      return state.products.filter((p) => p.category === categoryName);
     },
     getCartProducts: (state) => {
       return state.cartProducts;
@@ -33,8 +70,8 @@ const store = new Vuex.Store({
         : null;
     },
 
-    getFurstTenProducts: (state) => {
-      return state.products.slice(0, 10);
+    getCategories: (state) => {
+      return state.categories;
     },
   },
   mutations: {
@@ -51,6 +88,26 @@ const store = new Vuex.Store({
     setUsers(state, data) {
       state.users = [...data];
     },
+    setCategories(state, data) {
+      state.categories = [...data];
+    },
+
+    sortProductsByPropertyName: (state, propName) => {
+      state.products = state.products.sort((a, b) =>
+        typeof a[propName] === "number"
+          ? a[propName] - b[propName]
+          : a[propName].localeCompare(b[propName])
+      );
+    },
+    setFilterCategory: (state, filters) => {
+      state.filters.categories = filters;
+    },
+    setFilterPriceRange: (state, range) => {
+      state.filters.priceRange = { min: range[0], max: range[1] }; //range = {min: number, max: number}
+    },
+    setFilterUserId: (state, id) => {
+      state.filters.userId = id;
+    },
   },
   actions: {
     async allProducts({ commit }) {
@@ -58,10 +115,10 @@ const store = new Vuex.Store({
       const data = await responseData.json();
       commit("setProducts", data);
     },
-    async editProduct({ commit, state }, product) {
+    async editProduct(context, product) {
       const responseData = await ProductsApi.editProduct(product);
       if (responseData.ok) {
-        commit("editProduct", product);
+        context.commit("editProduct", product);
       }
     },
     async populateUsers({ commit }) {
@@ -69,7 +126,12 @@ const store = new Vuex.Store({
       const data = await responseData.json();
       commit("setUsers", data);
     },
-    addFilters({ commit }, filters) {},
+
+    async populateCategories({ commit }) {
+      const responseData = await CategoriesApi.getAllCategories();
+      const data = await responseData.json();
+      commit("setCategories", data);
+    },
   },
 });
 

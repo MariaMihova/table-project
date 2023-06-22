@@ -1,14 +1,29 @@
 <template>
   <div>
-    <v-banner>
-      <v-card-title> Products </v-card-title>
-    </v-banner>
+    <v-row align="center" justify="center">
+      <v-card-title>
+        <span class="text-h5">Products</span>
+      </v-card-title>
+    </v-row>
+    <v-divider class="mx-4"></v-divider>
+
+    <v-card-text>
+      <v-row align="center" justify="center">
+        <v-btn-toggle>
+          <v-btn color="#fac8e8" @click="filterByCategory"> Filters </v-btn>
+
+          <v-btn color="#fac8e8" @click="sortBy"> Sort by </v-btn>
+        </v-btn-toggle>
+      </v-row>
+    </v-card-text>
+
+    <FiltersModal v-if="openFilter" @close="closeFilters"></FiltersModal>
     <v-item-group active-class="primary">
       <v-container>
         <v-row>
           <v-col v-for="product in products" :key="product.id" cols="12" md="4">
             <div>
-              <ProductCardModal :product="product"></ProductCardModal>
+              <ProductCardModal :id="product.id"></ProductCardModal>
             </div>
           </v-col>
         </v-row>
@@ -21,28 +36,74 @@
 import TableHeaders from "@/helpers/TableHeaders";
 import productsViews from "@/viewModels/productsViews";
 import ProductCardModal from "./modals/ProductCardModal.vue";
+import FiltersModal from "./modals/FiltersModal.vue";
+import categoriesViews from "@/viewModels/categoriesViews";
 
 export default {
   components: {
     ProductCardModal,
+    FiltersModal,
+  },
+  provide() {
+    return {
+      closeFilters: this.closeFilters,
+    };
   },
   data() {
     return {
       headers: [],
+      categoryName: null,
+      propertyName: null,
+      openFilter: false,
     };
   },
 
   computed: {
-    products() {
-      return productsViews.populateProducts(
-        this.$store.getters.getFurstTenProducts
-      );
+    products: {
+      get() {
+        return productsViews.populateProducts(this.$store.getters.allProducts);
+      },
+      set({ method, prop }) {
+        this.$store.commit(method, prop);
+      },
+    },
+    categories() {
+      return categoriesViews.categoriesNames(this.$store.getters.getCategories);
     },
   },
 
   mounted() {
-    this.$store.dispatch("allProducts");
+    if (this.products.length <= 0) {
+      this.$store.dispatch("allProducts");
+    }
+
+    if (this.categories.length <= 0) {
+      this.$store.dispatch("populateCategories");
+    }
+
     this.headers = TableHeaders.getProductHeaders();
+  },
+
+  methods: {
+    filterByCategory() {
+      this.openFilter = true;
+    },
+    sortBy() {
+      this.products = {
+        method: "sortProductsByPropertyName",
+        prop: this.propertyName,
+      };
+    },
+    closeFilters() {
+      this.openFilter = false;
+    },
   },
 };
 </script>
+
+<style>
+.title {
+  text-align: center;
+  font-size: 150%;
+}
+</style>

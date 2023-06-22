@@ -1,4 +1,7 @@
 <template>
+  <v-container fluid>
+    <v-row align="center">
+      <v-col class="d-flex" cols="12" sm="16">
   <v-textarea
     @input="emitInput"
     :label="label"
@@ -7,6 +10,9 @@
     outlined
     v-bind="$attrs"
   ></v-textarea>
+  </v-col>
+  </v-row>
+  </v-container>
 </template>
 
 <script>

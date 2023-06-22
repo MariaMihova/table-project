@@ -21,6 +21,11 @@
 
       <v-card-text>
         <v-row>
+          <div class="grey--text ms-4">Category</div>
+
+          <div class="grey--text ms-4">$ {{ product.category }}</div>
+        </v-row>
+        <v-row>
           <div class="grey--text ms-4">Price</div>
 
           <div class="grey--text ms-4">$ {{ product.price }}</div>
@@ -67,7 +72,7 @@ import ProductDetailsModal from "../modals/ProductDetailsModal.vue";
 import UserDetailsModal from "../modals/UserDetailsModal.vue";
 
 export default {
-  props: ["product"],
+  props: ["id"], // id
   components: {
     ProductDetailsModal,
     UserDetailsModal,
@@ -76,6 +81,11 @@ export default {
     return {
       closeForm: this.closeForm,
     };
+  },
+  computed: {
+    product() {
+      return Object.assign({}, this.$store.getters.getProductById(this.id));
+    },
   },
 
   data() {

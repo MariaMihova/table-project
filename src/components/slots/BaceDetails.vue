@@ -1,6 +1,6 @@
 <template>
   <Details>
-    <v-dialog v-model="show" width="70%" class="popup" persistent>
+    <v-dialog v-model="show" width="30%" class="popup" persistent>
       <v-card v-if="displayObject">
         <v-card-title> {{ title }} </v-card-title>
         <v-spacer></v-spacer>
