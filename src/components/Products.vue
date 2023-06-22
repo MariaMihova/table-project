@@ -10,14 +10,12 @@
     <v-card-text>
       <v-row align="center" justify="center">
         <v-btn-toggle>
-          <v-btn color="#fac8e8" @click="filterByCategory"> Filters </v-btn>
-
           <v-btn color="#fac8e8" @click="sortBy"> Sort by </v-btn>
         </v-btn-toggle>
       </v-row>
     </v-card-text>
 
-    <FiltersModal v-if="openFilter" @close="closeFilters"></FiltersModal>
+    <FiltersModal></FiltersModal>
     <v-item-group active-class="primary">
       <v-container>
         <v-row>
@@ -54,7 +52,6 @@ export default {
       headers: [],
       categoryName: null,
       propertyName: null,
-      openFilter: false,
     };
   },
 
@@ -85,17 +82,11 @@ export default {
   },
 
   methods: {
-    filterByCategory() {
-      this.openFilter = true;
-    },
     sortBy() {
       this.products = {
         method: "sortProductsByPropertyName",
         prop: this.propertyName,
       };
-    },
-    closeFilters() {
-      this.openFilter = false;
     },
   },
 };

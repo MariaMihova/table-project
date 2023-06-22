@@ -1,6 +1,10 @@
 <template>
   <v-card>
-    <TextInput label="Enter user id" v-model="userId"></TextInput>
+    <TextInput
+      label="Enter user id"
+      v-model="userId"
+      style="width: 800px"
+    ></TextInput>
     <v-btn color="#fac8e8" @click="filterByUserId"> Filter </v-btn>
   </v-card>
 </template>

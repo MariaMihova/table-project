@@ -13,7 +13,7 @@
             <v-checkbox
               v-model="selected"
               :label="category"
-              color="#f7e3ab"
+              color="#fac8e8"
               :value="category"
               hide-details
             ></v-checkbox>
