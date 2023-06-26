@@ -1,20 +1,28 @@
 <template>
   <v-app>
-    <v-main>
-      <v-banner sticky>
-        <v-tabs fixed-tabs background-color="#f7e3ab" dark>
-          <router-link
-            class="navTab"
-            :to="route"
-            v-for="route in routs"
-            :key="route.name"
-          >
-            <v-tab id="tab">
-              {{ route.name }}
+    <v-app-bar app height="100" color="#f7e3ab">
+      <v-toolbar-title>
+        <!-- <span class="font-weith-lighr green--text">Open Mind</span> -->
+      </v-toolbar-title>
+      <v-tabs fixed-tabs dark class="pa-5">
+        <router-link
+          class="text-decoration-none pa-6"
+          :to="route"
+          v-for="route in routs"
+          :key="route.name"
+        >
+          <v-row>
+            <v-tab class="display-1 black--text">
+              <v-icon left class="display-1 black--text"
+                >mdi-emoticon-devil-outline</v-icon
+              >
+              <span>{{ route.name }}</span>
             </v-tab>
-          </router-link>
-        </v-tabs>
-      </v-banner>
+          </v-row>
+        </router-link>
+      </v-tabs>
+    </v-app-bar>
+    <v-main>
       <router-view></router-view>
     </v-main>
   </v-app>
@@ -34,18 +42,7 @@ export default {
 <style>
 div[data-app="true"] {
   background: url("../public/bg.jpg") center center fixed !important;
+
   background-size: cover;
-}
-.navTab {
-  text-decoration: none;
-  color: black;
-  margin: 20px;
-  font-size: xx-large;
-}
-#tab {
-  color: black;
-}
-.btn {
-  background-color: #f7e3ab;
 }
 </style>

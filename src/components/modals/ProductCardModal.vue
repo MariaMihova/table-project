@@ -42,24 +42,17 @@
 
       <v-card-text>
         <v-row align="center" justify="center">
-          <v-btn-toggle v-model="toggle_exclusive">
+          <v-btn-toggle v-model="toggle_exclusive" class="pink lighten-2">
             <v-btn
-              color="#fac8e8"
               v-if="product.userId"
               small
               @click="showUser(product.userId)"
             >
               User
             </v-btn>
-            <v-btn color="#fac8e8" small @click="showDetails(product)">
-              Details
-            </v-btn>
-            <v-btn color="#fac8e8" small @click="editItem(product)">
-              Edit
-            </v-btn>
-            <v-btn color="#fac8e8" small @click="addToCart(product)">
-              Add to cart
-            </v-btn>
+            <v-btn small @click="showDetails(product)"> Details </v-btn>
+            <v-btn small @click="editItem(product)"> Edit </v-btn>
+            <v-btn small @click="addToCart(product)"> Add to cart </v-btn>
           </v-btn-toggle>
         </v-row>
       </v-card-text>

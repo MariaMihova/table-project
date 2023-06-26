@@ -3,7 +3,7 @@ class Filters {
     return [
       { title: "Category", icon: "mdi-arrange-send-backward" },
       { title: "Price range", icon: "mdi-cash" },
-      { title: "UserId", icon: "mdi-account" },
+      { title: "User id", icon: "mdi-account" },
     ];
   }
 }

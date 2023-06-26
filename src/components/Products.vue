@@ -1,23 +1,19 @@
 <template>
   <div>
-    <v-row align="center" justify="center">
-      <v-card-title>
-        <span class="text-h5">Products</span>
-      </v-card-title>
-    </v-row>
     <v-divider class="mx-4"></v-divider>
 
     <v-card-text>
-      <v-row align="center" justify="center">
-        <v-btn-toggle>
-          <v-btn color="#fac8e8" @click="sortBy"> Sort by </v-btn>
-        </v-btn-toggle>
-      </v-row>
+      <v-row align="center" justify="center"> </v-row>
     </v-card-text>
 
     <FiltersModal></FiltersModal>
     <v-item-group active-class="primary">
       <v-container>
+        <v-card-title>
+          <v-row align="center" justify="center">
+            <span class="display-4 pa-5 font-weight-bold">Products</span>
+          </v-row>
+        </v-card-title>
         <v-row>
           <v-col v-for="product in products" :key="product.id" cols="12" md="4">
             <div>

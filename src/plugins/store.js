@@ -3,14 +3,13 @@ import Vuex from "vuex";
 import ProductsApi from "../api/productsService.js";
 import UsersApi from "../api/usersService.js";
 import CategoriesApi from "../api/categoriesService.js";
-import productsService from "../api/productsService.js";
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
     cartProducts: [],
-    products: [],
+    products: [], // do not change
     users: [],
     categories: [],
     filters: {
@@ -18,6 +17,8 @@ const store = new Vuex.Store({
       priceRange: null,
       userId: null,
     },
+    sort: "",
+    clearFilter: false,
   },
   getters: {
     allProducts: (state) => {
@@ -42,6 +43,28 @@ const store = new Vuex.Store({
       if (state.filters && state.filters.userId) {
         products = products.filter((p) => p.userId === state.filters.userId);
       }
+
+      if (state.sort) {
+        switch (state.sort) {
+          case "asc":
+            products.sort((a, b) => a.price - b.price);
+            break;
+          case "des":
+            products.sort((a, b) => b.price - a.price);
+            break;
+          default:
+            products.sort((a, b) =>
+              typeof a[state.sort] === "number"
+                ? a[state.sort] - b[state.sort]
+                : a[state.sort].localeCompare(b[state.sort])
+            );
+        }
+      }
+
+      if (state.clearFilter) {
+        products = state.products;
+      }
+
       return products;
     },
 
@@ -92,13 +115,10 @@ const store = new Vuex.Store({
       state.categories = [...data];
     },
 
-    sortProductsByPropertyName: (state, propName) => {
-      state.products = state.products.sort((a, b) =>
-        typeof a[propName] === "number"
-          ? a[propName] - b[propName]
-          : a[propName].localeCompare(b[propName])
-      );
+    setSort: (state, propName) => {
+      state.sort = propName;
     },
+
     setFilterCategory: (state, filters) => {
       state.filters.categories = filters;
     },
