@@ -2,14 +2,16 @@
   <Details>
     <v-dialog v-model="show" width="30%" class="popup" persistent>
       <v-card v-if="displayObject">
-        <v-card-title> {{ title }} </v-card-title>
+        <v-card-title class="primary black--text"> {{ title }} </v-card-title>
         <v-spacer></v-spacer>
         <v-card-text v-for="(prop, key) in displayObject" v-bind:key="key">
           <ListItem :value="prop" :label="capitalLeter(key)"></ListItem>
         </v-card-text>
         <v-spacer></v-spacer>
         <v-card-text>
-          <v-btn class="submit" @click="onSubmit">Close</v-btn>
+          <v-btn class="submit primary black--text" @click="onSubmit"
+            >Close</v-btn
+          >
         </v-card-text>
       </v-card>
     </v-dialog>

@@ -1,5 +1,5 @@
 <template>
-  <v-card flat>
+  <v-card flat class="secondary">
     <v-subheader>Select price range</v-subheader>
 
     <v-card-text>

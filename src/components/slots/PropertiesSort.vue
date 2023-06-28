@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="secondary">
     <v-card-text>
       <SelectInput
         label="Select Property"

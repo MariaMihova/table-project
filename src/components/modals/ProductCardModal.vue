@@ -10,26 +10,19 @@
       v-bind:productId="selectedId"
       @close="closeForm"
     ></ProductDetailsModal>
-    <v-card class="mx-auto my-12" max-width="374">
+    <v-card class="mx-auto my-12 secondary" max-width="374">
       <template slot="progress">
         <v-progress-linear height="10" indeterminate></v-progress-linear>
       </template>
 
       <v-img height="250" src="../../../public/pic.jpg"></v-img>
 
-      <v-card-title>{{ product.name }}</v-card-title>
+      <v-card-title class="primary--text">{{ product.name }}</v-card-title>
 
-      <v-card-text>
-        <v-row>
-          <div class="grey--text ms-4">Category</div>
+      <v-card-text class="grey--text ms-4">
+        <div>Category {{ product.category }}</div>
 
-          <div class="grey--text ms-4">$ {{ product.category }}</div>
-        </v-row>
-        <v-row>
-          <div class="grey--text ms-4">Price</div>
-
-          <div class="grey--text ms-4">$ {{ product.price }}</div>
-        </v-row>
+        <div>Price ${{ product.price }}</div>
 
         <div class="my-4 text-subtitle-1">{{ product.id }}</div>
 
@@ -42,17 +35,18 @@
 
       <v-card-text>
         <v-row align="center" justify="center">
-          <v-btn-toggle v-model="toggle_exclusive" class="pink lighten-2">
+          <v-btn-toggle v-model="toggle_exclusive" class="primary">
             <v-btn
+              text
               v-if="product.userId"
               small
               @click="showUser(product.userId)"
             >
               User
             </v-btn>
-            <v-btn small @click="showDetails(product)"> Details </v-btn>
-            <v-btn small @click="editItem(product)"> Edit </v-btn>
-            <v-btn small @click="addToCart(product)"> Add to cart </v-btn>
+            <v-btn text small @click="showDetails(product)"> Details </v-btn>
+            <v-btn text small @click="editItem(product)"> Edit </v-btn>
+            <v-btn text small @click="addToCart(product)"> Add to cart </v-btn>
           </v-btn-toggle>
         </v-row>
       </v-card-text>

@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="secondary">
     <v-card-text>
       <v-container fluid>
         <v-row>

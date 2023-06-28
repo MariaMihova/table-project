@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="secondary">
     <TextInput
       label="Enter user id"
       v-model="userId"

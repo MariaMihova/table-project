@@ -5,9 +5,9 @@
         v-model="drawer"
         :mini-variant.sync="mini"
         permanent
-        class="drawer"
+        class="drawer pt-20 secondary"
       >
-        <v-list-item class="px-2 yellow lighten-4">
+        <v-list-item class="primary">
           <v-list-item-icon>
             <v-icon>mdi-filter-settings</v-icon>
           </v-list-item-icon>
@@ -59,9 +59,9 @@
           v-model="drawer"
           :mini-variant.sync="mini"
           permanent
-          class="drawer"
+          class="drawer secondary"
         >
-          <v-list-item class="px-2 yellow lighten-4">
+          <v-list-item class="primary">
             <v-list-item-icon>
               <v-icon>mdi-swap-vertical-bold </v-icon>
             </v-list-item-icon>
@@ -69,10 +69,6 @@
             <v-list-item-content class="font-weight-bold"
               >Sort by</v-list-item-content
             >
-
-            <v-btn icon @click.stop="mini = !mini">
-              <v-icon>mdi-chevron-left</v-icon>
-            </v-btn>
           </v-list-item>
 
           <v-divider></v-divider>
@@ -151,7 +147,7 @@ export default {
   },
   data() {
     return {
-      drawer: true,
+      drawer: false,
       filterOptions: {
         category: false,
         priceRange: false,

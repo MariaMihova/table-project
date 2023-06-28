@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import ProductsApi from "../api/productsService.js";
 import UsersApi from "../api/usersService.js";
 import CategoriesApi from "../api/categoriesService.js";
+import ArtWork from "../helpers/Art.js";
 
 Vue.use(Vuex);
 

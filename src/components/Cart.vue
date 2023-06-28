@@ -1,9 +1,11 @@
 <template>
   <v-col cols="12" sm="6" offset-sm="3">
     <v-card width="100%">
-      <v-list two-line>
+      <v-list two-line class="secondary">
         <template>
-          <v-subheader> Products in cart </v-subheader>
+          <v-subheader class="headline black--text">
+            Products in cart
+          </v-subheader>
           <v-divider></v-divider>
           <div v-if="products.length > 0">
             <v-list-item
@@ -21,7 +23,9 @@
           </div>
 
           <v-divider></v-divider>
-          <v-subheader> Total: <v-spacer></v-spacer> {{ total }} </v-subheader>
+          <v-subheader class="primary black--text">
+            Total: <v-spacer></v-spacer> {{ total }}
+          </v-subheader>
         </template>
       </v-list>
     </v-card>

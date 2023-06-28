@@ -1,7 +1,9 @@
 <template>
   <v-col cols="12" sm="6" offset-sm="3">
-    <v-card width="100%">
-      <v-card-title>Edit product {{ formData.id }} </v-card-title>
+    <v-card width="100%" class="secondary">
+      <v-card-title class="primary black--text"
+        >Edit product {{ formData.id }}
+      </v-card-title>
       <v-form v-if="formData" ref="form" class="form">
         <TextInput v-model="formData.id" label="Id" disabled></TextInput>
         <TextInput v-model="formData.name" label="Name"></TextInput>
@@ -30,8 +32,19 @@
         <v-container fluid>
           <v-row align="center">
             <v-col class="d-flex" cols="12" sm="16">
-              <v-btn class="submit" id="save" @click="onSave">Save</v-btn>
-              <v-btn class="submit" id="close" @click="onClose">Close</v-btn>
+              <v-btn
+                class="submit mx-3 primary black--text"
+                id="save"
+                @click="onSave"
+                :loading="loading"
+                >Save</v-btn
+              >
+              <v-btn
+                class="submit mx-3 primary black--text"
+                id="close"
+                @click="onClose"
+                >Close</v-btn
+              >
             </v-col>
           </v-row>
         </v-container>
@@ -66,8 +79,8 @@ export default {
     return {
       formData: null,
       show: true,
-      categoriesNames: [],
       subcategories: [],
+      loading: false,
     };
   },
 
@@ -77,6 +90,9 @@ export default {
     },
     productData() {
       return this.$store.getters.getProductById(this.$route.params.id);
+    },
+    categories() {
+      return this.$store.getters.getCategories;
     },
   },
 
@@ -90,9 +106,11 @@ export default {
       this.$router.push({ path: "/products" });
     },
     async onSave() {
+      this.loading = true;
       await this.$store.dispatch("editProduct", this.formData);
 
       this.formData = {};
+      this.loading = false;
       this.onClose();
     },
     async populateForm() {
@@ -101,13 +119,11 @@ export default {
         ProductsViews.editProductView(this.productData)
       );
 
-      const categoriesResponse = await CategoriesApi.getAllCategories();
-      const categories = await categoriesResponse.json();
-      this.categoriesNames = CategoriesViews.categoriesNames(categories);
+      this.categoriesNames = CategoriesViews.categoriesNames(this.categories);
 
       this.subcategories = CategoriesViews.subcategorysByCategoryName(
         this.formData.category,
-        categories
+        this.categories
       );
     },
   },

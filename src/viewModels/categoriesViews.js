@@ -1,3 +1,5 @@
+import ArtWork from "../helpers/Art.js";
+
 class CategoriesViews {
   categoriesNames(categories) {
     return categories.map((c) => c.name);

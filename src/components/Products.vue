@@ -1,19 +1,16 @@
 <template>
   <div>
-    <v-divider class="mx-4"></v-divider>
-
-    <v-card-text>
-      <v-row align="center" justify="center"> </v-row>
-    </v-card-text>
-
-    <FiltersModal></FiltersModal>
+    <FiltersModal class="mt-7"></FiltersModal>
     <v-item-group active-class="primary">
       <v-container>
-        <v-card-title>
-          <v-row align="center" justify="center">
-            <span class="display-4 pa-5 font-weight-bold">Products</span>
-          </v-row>
-        </v-card-title>
+        <v-row align="center" justify="center" class="mt-4">
+          <v-card-title>
+            <span class="display-4 pa-5 font-weight-bold primary--text"
+              >Products</span
+            >
+          </v-card-title>
+        </v-row>
+
         <v-row>
           <v-col v-for="product in products" :key="product.id" cols="12" md="4">
             <div>
@@ -54,7 +51,9 @@ export default {
   computed: {
     products: {
       get() {
-        return productsViews.populateProducts(this.$store.getters.allProducts);
+        return productsViews.populateProducts(
+          this.$store.getters.getFurstTenProducts
+        );
       },
       set({ method, prop }) {
         this.$store.commit(method, prop);
